@@ -1,0 +1,234 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
+
+.sprite {
+    background-image: url(../src/spritesheet.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-dch {
+    width: 84px;
+    height: 116px;
+    background-position: -20px -20px;
+}
+
+.sprite-frente {
+    width: 82px;
+    height: 124px;
+    background-position: -144px -20px;
+}
+
+.sprite-izq {
+    width: 84px;
+    height: 116px;
+    background-position: -266px -20px;
+}
+
+
+
+.sprite1 {
+    background-image: url(../src/spritesheet1.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite1-1 {
+    width: 100px;
+    height: 100px;
+    background-position: -5px -5px;
+}
+
+.sprite1-2 {
+    width: 100px;
+    height: 100px;
+    background-position: -115px -5px;
+}
+
+.sprite1-3 {
+    width: 100px;
+    height: 100px;
+    background-position: -225px -5px;
+}
+
+.sprite1-4 {
+    width: 100px;
+    height: 100px;
+    background-position: -335px -5px;
+}
+
+.sprite1-5 {
+    width: 100px;
+    height: 100px;
+    background-position: -445px -5px;
+}
+
+.sprite1-6 {
+    width: 100px;
+    height: 100px;
+    background-position: -555px -5px;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+}
+
+.juego{
+    width: 100%;
+    height: 100%;
+    background-image: url(../src/pngwing.com.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(3px);
+    z-index: 0;
+}
+.login{
+    display: contents;
+    
+}
+
+.cont{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    translate:0 -100vh;
+}
+.cont input,.botones{
+    width: 20%;
+    margin: 10px 10px 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.cuerpo{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: nowrap;
+    translate:0 -100vh;
+}
+
+.tablero{
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10;
+}
+.tablero1{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column-reverse;
+    z-index: 10;
+}
+
+.dado{
+    width: 20%;
+    height: 80%;
+    background-color: #fff;
+    z-index: 10;
+}
+
+.con{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.con h3, .con div{
+    padding: 20px 20px 20px 20px; 
+    z-index: 100;
+}
+
+.con input{
+    width: 80%;
+    height: 5%;
+    background:linear-gradient(180deg, rgba(255,255,255,1) 7%, rgba(125,178,99,0.6138830532212884) 62%, rgba(255,255,255,1) 100%);
+    border-radius: 10px;
+    border: 2px #fff solid;
+}
+.con input:hover{
+    transform: scale(1.1,1.1);
+}
+
+.dado1{
+    width: 0;
+}
+
+#tab
+{
+    width: 80%;
+    height: 80%;
+    border: 2px #000 solid;
+}
+
+#tab td{
+    width: 15px;
+    height: 15px;
+    border: 1px #000 solid;
+    
+}
+
+#tab1
+{
+    width: 60%;
+    height: 40%;
+    border: 2px #000 solid;
+}
+
+#tab1 td{
+    width: 15px;
+    height: 15px;
+    border: 1px #000 solid;
+}
+.fin{
+    width: 80%;
+    height: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+}
+
+
+/* #c1{
+
+}
+#c2{
+    
+}
+#c3{
+    
+}
+#c4{
+    
+}
+#c5{
+    
+}
+#c6{
+    
+} */
