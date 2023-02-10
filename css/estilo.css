@@ -5,7 +5,7 @@
 }
 
 
-.sprite {
+/* .sprite {
     background-image: url(../src/spritesheet.png);
     background-repeat: no-repeat;
     display: block;
@@ -71,7 +71,7 @@
     width: 100px;
     height: 100px;
     background-position: -555px -5px;
-}
+} */
 
 body{
     width: 100vw;
