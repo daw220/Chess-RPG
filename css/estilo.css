@@ -4,75 +4,6 @@
     box-sizing: border-box; 
 }
 
-
-.sprite {
-    background-image: url(../src/spritesheet.png);
-    background-repeat: no-repeat;
-    display: block;
-}
-
-.sprite-dch {
-    width: 84px;
-    height: 116px;
-    background-position: -20px -20px;
-}
-
-.sprite-frente {
-    width: 82px;
-    height: 124px;
-    background-position: -144px -20px;
-}
-
-.sprite-izq {
-    width: 84px;
-    height: 116px;
-    background-position: -266px -20px;
-}
-
-
-
-.sprite1 {
-    background-image: url(../src/spritesheet1.png);
-    background-repeat: no-repeat;
-    display: block;
-}
-
-.sprite1-1 {
-    width: 100px;
-    height: 100px;
-    background-position: -5px -5px;
-}
-
-.sprite1-2 {
-    width: 100px;
-    height: 100px;
-    background-position: -115px -5px;
-}
-
-.sprite1-3 {
-    width: 100px;
-    height: 100px;
-    background-position: -225px -5px;
-}
-
-.sprite1-4 {
-    width: 100px;
-    height: 100px;
-    background-position: -335px -5px;
-}
-
-.sprite1-5 {
-    width: 100px;
-    height: 100px;
-    background-position: -445px -5px;
-}
-
-.sprite1-6 {
-    width: 100px;
-    height: 100px;
-    background-position: -555px -5px;
-}
-
 body{
     width: 100vw;
     height: 100vh;
@@ -103,7 +34,7 @@ body{
     translate:0 -100vh;
 }
 .cont input,.botones{
-    width: 20%;
+    width: 30%;
     margin: 10px 10px 10px 10px;
     display: flex;
     justify-content: center;
