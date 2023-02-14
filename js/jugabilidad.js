@@ -1,7 +1,7 @@
 'use strict'
 
 import { registro,inicioSesion } from "./firebase.js";
-
+import { dibujar } from "./dado.js";
 
 let x,y,z,t;
 let cas1,cas2,cas3,cas4;
@@ -238,36 +238,67 @@ function crearDado() {
     h1.textContent=`Numero de tiradas: ${tiradas}`;
     con.appendChild(h1);
 
-    let div1 = document.createElement('div');
-    div1.setAttribute("class",`sprite1 sprite1-1`);
+    let div1 = document.createElement('aside');
+    div1.setAttribute("class",`dado cara1`);
     div1.setAttribute("id",`c1`);
     con.appendChild(div1);
+    let can1 = document.createElement('canva');
+    can1.setAttribute("id",`dado1`);
+    div1.appendChild(can1);
 
-    let div2 = document.createElement('div');
-    div2.setAttribute("class",`sprite1 sprite1-2`);
+
+    let div2 = document.createElement('aside');
+    div2.setAttribute("class",`dado cara2`);
     div2.setAttribute("id",`c2`);
     con.appendChild(div2);
+    let can2 = document.createElement('canva');
+    can2.setAttribute("id",`dado2`);
+    can2.setAttribute("width",`50px`);
+    can2.setAttribute("height",`50px`);
+    div2.appendChild(can2);
     
-    let div3 = document.createElement('div');
-    div3.setAttribute("class",`sprite1 sprite1-3`);
+    let div3 = document.createElement('aside');
+    div3.setAttribute("class",`dado cara3`);
     div3.setAttribute("id",`c3`);
     con.appendChild(div3);
+    let can3 = document.createElement('canva');
+    can3.setAttribute("id",`dado3`);
+    can3.setAttribute("width",`50px`);
+    can3.setAttribute("height",`50px`);
+    div3.appendChild(can3);
 
-    let div4 = document.createElement('div');
-    div4.setAttribute("class",`sprite1 sprite1-4`);
+
+    let div4 = document.createElement('aside');
+    div4.setAttribute("class",`dado cara4`);
     div4.setAttribute("id",`c4`);
     con.appendChild(div4);
+    let can4 = document.createElement('canva');
+    can4.setAttribute("id",`dado4`);
+    can4.setAttribute("width",`50px`);
+    can4.setAttribute("height",`50px`);
+    div4.appendChild(can4);
 
-    let div5 = document.createElement('div');
-    div5.setAttribute("class",`sprite1 sprite1-5`);
+    let div5 = document.createElement('aside');
+    div5.setAttribute("class",`dado cara5`);
     div5.setAttribute("id",`c5`);
     con.appendChild(div5);
+    let can5 = document.createElement('canva');
+    can5.setAttribute("id",`dado5`);
+    can5.setAttribute("width",`50px`);
+    can5.setAttribute("height",`50px`);
+    div5.appendChild(can5);
 
     let div6 = document.createElement('div');
-    div6.setAttribute("class",`sprite1 sprite1-6`);
+    div6.setAttribute("class",`dado cara6`);
     div6.setAttribute("id",`c6`);
     con.appendChild(div6);
+    let can6 = document.createElement('canva');
+    can6.setAttribute("id",`dado6`);
+    can6.setAttribute("width",`50px`);
+    can6.setAttribute("height",`50px`);
+    div6.appendChild(can6);
 
+    dibujar();
 
     bn.addEventListener("click", (ev)=>{
         tiradas++;
