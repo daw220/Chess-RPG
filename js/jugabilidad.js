@@ -3,11 +3,9 @@
 import { registro,inicioSesion } from "./firebase.js";
 import { dibujar } from "./dado.js";
 
-let x,y,z,t;
 let cas1,cas2,cas3,cas4;
 let negi,posi,negj,posj;
 let tiradas = "0";
-
 
 function finPartida(params) {
 
@@ -29,8 +27,8 @@ function finPartida(params) {
 
     div1.addEventListener("click", ()=>{
 
-        crearTablero("0");
-        crearDado();
+        crearTablero(1);
+        crearDado(1);
     });
 
     let h2 = document.createElement('h1');
@@ -61,8 +59,12 @@ function finPartida(params) {
 }
 
 function mover(pulsado){
-    
 
+ 
+    let bn = document.getElementById("tirar");
+    bn.disabled=false;
+
+    
 
     if(pulsado == 99) 
     {
@@ -104,7 +106,6 @@ function mover(pulsado){
 }
 function movimiento(pasos){
 
-
     for (let i = 0; i < 10; i++) {
 
         for (let j = 0; j < 10; j++) {
@@ -121,17 +122,25 @@ function movimiento(pasos){
                 negj=j-pasos;
                 posj=j+pasos;
 
+                let lados=0;
+
                 if(negi>= 0 )
                 {
                     let casilla1 = document.getElementById(`${cas2}`);
                     casilla1.style= "background-color: red;"
                     casilla1.addEventListener("click", ()=>{ mover(`${cas2}`)})
                 }
+                else{
+                    lados++;
+                }
                 if( posi < 10 )
                 {
                     let casilla2 = document.getElementById(`${cas1}`);
                     casilla2.style= "background-color: red;"
                     casilla2.addEventListener("click",()=>{ mover(`${cas1}`)})
+                }
+                else{
+                    lados++;
                 }
                     
                 if( negj >= 0 )
@@ -140,11 +149,23 @@ function movimiento(pasos){
                     casilla3.style= "background-color: red;"
                     casilla3.addEventListener("click",()=>{ mover(`${cas4}`)})
                 }
+                else{
+                    lados++;
+                }
                 if(posj < 10 )
                 {
                     let casilla4 = document.getElementById(`${cas3}`);
                     casilla4.style= "background-color: red;"
                     casilla4.addEventListener("click",()=>{ mover(`${cas3}`)})
+                }
+                else{
+                    lados++;
+                }
+
+                if(lados == 4)
+                {
+                    let bn = document.getElementById("tirar");
+                    bn.disabled=false;
                 }
 
             }
@@ -161,7 +182,10 @@ function crearTablero(pro) {
         let login = document.getElementById('login');
         login.innerHTML="";
 
-    if(pro == 1){
+    if(pro == 0){
+        let cuerpo = document.getElementById('cuerpo');
+        cuerpo.id="cuerpo";
+        cuerpo.classList="cuerpo";
         
         let tablero = document.getElementById('t');
         tablero.id="tablero";
@@ -171,6 +195,7 @@ function crearTablero(pro) {
     {
         let tablero = document.getElementById('tablero');
         tablero.innerHTML="";
+        tablero.classList="tablero";
     }
     
 
@@ -214,11 +239,21 @@ function tirarDado() {
   return Math.round(Math.random()* (6-1)+1);
 }
 
-function crearDado() {
+function crearDado(opt) {
+    if(opt == 0)
+    {
+        let dado= document.getElementById('d');
+        dado.id="dado";
+        dado.classList="dado";
+    }
+    else
+    {
+        let dado= document.getElementById('dado');
+        dado.id="dado";
+        dado.classList="dado";
+    }
 
-    let dado= document.getElementById('d');
-    dado.id="dado";
-    dado.classList="dado";
+    
 
     let con = document.createElement('div');
     con.setAttribute("class",`con`);
@@ -236,36 +271,46 @@ function crearDado() {
     h1.textContent=`Numero de tiradas: ${tiradas}`;
     con.appendChild(h1);
 
+    let e3 = document.createElement('div');
+    e3.setAttribute("class",`e3`);
+    e3.setAttribute("id",`e3`);
+    con.appendChild(e3);
+
+    let d3 = document.createElement('div');
+    d3.setAttribute("class",`d3`);
+    d3.setAttribute("id",`d3`);
+    e3.appendChild(d3);
+
+
     let div1 = document.createElement('aside');
     div1.setAttribute("class",`da cara1`);
     div1.setAttribute("id",`c1`);
-    con.appendChild(div1);
-
-
+    d3.appendChild(div1);
+    
     let div2 = document.createElement('aside');
     div2.setAttribute("class",`da cara2`);
     div2.setAttribute("id",`c2`);
-    con.appendChild(div2);
+    d3.appendChild(div2);
     
     let div3 = document.createElement('aside');
     div3.setAttribute("class",`da cara3`);
     div3.setAttribute("id",`c3`);
-    con.appendChild(div3);
+    d3.appendChild(div3);
 
     let div4 = document.createElement('aside');
     div4.setAttribute("class",`da cara4`);
     div4.setAttribute("id",`c4`);
-    con.appendChild(div4);
+    d3.appendChild(div4);
 
     let div5 = document.createElement('aside');
     div5.setAttribute("class",`da cara5`);
     div5.setAttribute("id",`c5`);
-    con.appendChild(div5);
+    d3.appendChild(div5);
 
     let div6 = document.createElement('aside');
     div6.setAttribute("class",`da cara6`);
     div6.setAttribute("id",`c6`);
-    con.appendChild(div6);
+    d3.appendChild(div6);
 
     dibujar("1");
 
@@ -276,13 +321,45 @@ function crearDado() {
         h1.textContent=``;
         h1.textContent=`Numero de tiradas: ${tiradas}`;
 
+        let d3 = document.getElementById('d3');
+        d3.classList.add("animacion");
+
         let numD = tirarDado();
-        dibujar(numD);
+        
+        window.setTimeout(()=>{dibujar(numD)},2000);
 
-        movimiento(numD);
-
+        window.setTimeout(()=>{
+            movimiento(numD)
+            d3.classList.remove("animacion");
+        },3000);
+        bn.disabled=true;
 
     });
+
+}
+function botonJugar(){
+
+    let email = document.getElementById('email');
+    email.disabled=true;
+    let password = document.getElementById('password');
+    password.disabled=true;
+    let reg = document.getElementById('reg');
+    reg.disabled=true;
+    let log = document.getElementById('log');
+    log.classList="btn btn-secondary";
+    log.disabled=true;
+    let jugar = document.getElementById('jugar');
+    jugar.classList="btn btn-primary"
+    jugar.disabled=false;
+
+    jugar.addEventListener("click", ()=>{
+    let login = document.getElementById('login');
+    login.classList="";
+    crearTablero(0);
+    crearDado(0);
+
+    })
+
 
 }
 
@@ -300,8 +377,8 @@ function menuJugar(fallo){
     
     
     
-    let h3 = document.createElement('h3');
-    h3.textContent="Chess-RPG";
+    let h3 = document.createElement('div');
+    h3.classList="logo";
     div.appendChild(h3);
 
 
@@ -313,30 +390,41 @@ function menuJugar(fallo){
     correo.id="email";
     correo.classList="form-control";
     correo.placeholder="Correo...";
-    div.appendChild(correo);
+    form.appendChild(correo);
 
     let contra = document.createElement('input');
     contra.type="password";
     contra.id="password";
+    contra.autocomplete=true;
     contra.placeholder="Contraseña...";
     contra.classList="form-control";
-    div.appendChild(contra);
+    form.appendChild(contra);
 
     let div2 = document.createElement('div');
     div2.id="botones";
     div2.classList= "botones";
-    div.appendChild(div2);
+    form.appendChild(div2);
     let reg = document.createElement('input');
     reg.type="button";
     reg.value="Registro";
+    reg.id="reg";
     reg.classList="btn btn-secondary";
     div2.appendChild(reg);
 
     let log = document.createElement('input');
     log.type="button";
     log.value="Iniciar sesión";
+    log.id="log";
     log.classList="btn btn-primary"
     div2.appendChild(log);
+    
+    let jugar = document.createElement('input');
+    jugar.id=  "jugar";
+    jugar.type="button";
+    jugar.value="JUGAR";
+    jugar.disabled="true";
+    jugar.classList="btn btn-secondary";
+    div.appendChild(jugar);
 
     reg.addEventListener("click", ()=> registro());
     log.addEventListener("click", ()=> inicioSesion());
@@ -345,15 +433,13 @@ function menuJugar(fallo){
         let p = document.createElement('p');
         p.textContent="Usuario o contraseña incorrecto";
         p.style="color:red";
-        login.appendChild(p);
-        console.log("1");
+        div.appendChild(p);
     }
     if (fallo == 2){
         let p = document.createElement('p');
         p.textContent="Formato de correo o contraseña fallido \n Correo debe incluir @ \n Contraseña de al menos 6 caracteres";
         p.style="color:red";
-        login.appendChild(p);
-        console.log("2");
+        div.appendChild(p);
     }
     
     
@@ -363,6 +449,6 @@ function inicio(){
     menuJugar(0);
 }
 
-export{crearDado,crearTablero,menuJugar}
+export{botonJugar,menuJugar}
 
 window.onload=inicio;

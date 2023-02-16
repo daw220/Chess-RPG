@@ -1,7 +1,17 @@
+@font-face {
+    font-family: 'pixel';
+    src: url('../fonts/ThaleahFat.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+  }
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box; 
+    font-family: pixel;
+    font-size: x-large;
+
 }
 .sprite {
     background-image: url(../src/spritesheet.png);
@@ -74,20 +84,27 @@
 body{
     width: 100vw;
     height: 100vh;
-}
-
-.juego{
-    width: 100%;
-    height: 100%;
-    background-image: url(../src/pngwing.com.png);
+    background-image: url(../src/fondo.png);
     background-repeat: no-repeat;
     background-size: cover;
-    filter: blur(3px);
     z-index: 0;
 }
+.logo{
+    width: 500px;
+    height: 500px;
+    background-image: url(../src/logo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
 .login{
-    display: contents;
-    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
 }
 
 .cont{
@@ -98,15 +115,29 @@ body{
     justify-content: center;
     align-items: center;
     z-index: 10;
-    translate:0 -100vh;
 }
+
+.cont form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: 25%;
+    margin: 0;
+    padding: 0;
+}
+
 .cont input,.botones{
-    width: 30%;
+    width:  60%;
     margin: 10px 10px 10px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
+}
+#jugar{
+    width:  42%;
 }
 
 .cuerpo{
@@ -116,8 +147,7 @@ body{
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    flex-wrap: nowrap;
-    translate:0 -100vh;
+    z-index: 10;
 }
 
 .tablero{
@@ -172,23 +202,68 @@ body{
 .con input:hover{
     transform: scale(1.1,1.1);
 }
+
+.e3 {
+    width: 100px;
+    height: 100px;
+    margin: 3em auto 0 auto;
+    position: relative;
+    perspective-origin: center -50%;
+    perspective: 500px;
+  }
+  
+.d3 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transform: translateZ(-150px);    
+  }
+.animacion{
+    animation-name: gira;
+    animation-duration: 3s;
+    animation-iteration-count: ease;
+}  
+.da{
+    position: absolute;
+    width: 100px;
+    height:100px;
+    background-color:#fff;
+    font-size: 3em;
+    text-align: center;
+    transform: scale(1.5,1.5);
+}
+/*frente*/
 .cara1{
-    transform: translateZ(150px);
+    transform: translateZ(48px);
 }
+/*trasera*/
 .cara2{
-    transform: translateZ(150px), rotateZ(90deg),;
+    transform: rotateY(180deg) translateZ(48px);
 }
+/*izquierda*/
 .cara3{
-    transform: translateZ(150px), rotateZ(-90deg),;
+    transform: rotateY(-90deg) translateZ(48px);
 }
+/*derecha*/
 .cara4{
-    transform: translateZ(150px);
+    transform: rotateY(90deg) translateZ(48px);
 }
+/*abajo*/
 .cara5{
-    transform: translateZ(150px);
+    transform: rotateX(-90deg) translateZ(48px)
 }
+/*arriba*/
 .cara6{
-    transform: translateZ(150px);
+    transform: rotateX(90deg) translateZ(48px)
+}
+
+@keyframes gira {
+    0%{transform: translateZ(-150px) rotateY(0deg) rotatex(0deg);}
+    23%{transform: translateZ(-150px) rotateY(360deg) rotatex(360deg);}
+    50%{transform: translateZ(-150px) rotateY(0deg) rotatex(0deg);}
+    75%{transform: translateZ(-150px) rotateY(360deg) rotatex(360deg);}
+    100%{transform: translateZ(-150px) rotateY(0deg) rotatex(0deg);}
 }
 
 
@@ -228,25 +303,5 @@ body{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-
 }
 
-
-/* #c1{
-
-}
-#c2{
-    
-}
-#c3{
-    
-}
-#c4{
-    
-}
-#c5{
-    
-}
-#c6{
-    
-} */
