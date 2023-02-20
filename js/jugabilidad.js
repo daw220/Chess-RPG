@@ -1,13 +1,18 @@
 'use strict'
-
-import { registro,inicioSesion } from "./firebase.js";
+ 
+import { registro,inicioSesion, anhadir, tablaFin, record ,actuRecord} from "./firebase.js";
 import { dibujar } from "./dado.js";
 
 let cas1,cas2,cas3,cas4;
 let negi,posi,negj,posj;
 let tiradas = "0";
+let nombre;
+let jugadas = [];
+let ini;
 
 function finPartida(params) {
+    
+    anhadir(tiradas,nombre,jugadas,ini)
 
     let tablero = document.getElementById('tablero');
     tablero.innerHTML="";
@@ -18,15 +23,13 @@ function finPartida(params) {
     let div = document.createElement('div');
     div.id="fin";
 
-    let h1 = document.createElement('h1');
-    h1.innerHTML="VICTORIA";
-    div.appendChild(h1);
-
     let div1 = document.createElement('div');
     div.appendChild(div1);
 
     div1.addEventListener("click", ()=>{
-
+        tiradas = 0;
+        nombre="";
+        jugadas = [];
         crearTablero(1);
         crearDado(1);
     });
@@ -41,26 +44,31 @@ function finPartida(params) {
     tablero.appendChild(tab);
     tablero.appendChild(div);
 
+    tablaFin();
 
-    for (let i = 0; i < 5; i++) {
+    let h1 = document.createElement('h1');
 
-        let tr = document.createElement("tr");
-        tab.appendChild(tr);
-
-        for (let j = 0; j < 5; j++) {
-
-            let td = document.createElement("td");
-            tr.appendChild(td);
-        
-        }
+    let record = record(tiradas);
+    if(record == 0)
+    {
+        h1.innerHTML=`Héroe, has establecido un récord de tiradas con ${tiradas} tiradas.`;
+        tablero.appendChild(h1);
+        actuRecord();
     }
+    else
+    {
+        h1.innerHTML=`!“Récord no superado, el actual récord es de ${tiradas} tiradas.`;
+        tablero.appendChild(h1);
+    }
+    
     tablero.appendChild(tab);
 
 }
 
 function mover(pulsado){
 
- 
+    jugadas.push(pulsado);
+
     let bn = document.getElementById("tirar");
     bn.disabled=false;
 
@@ -268,7 +276,7 @@ function crearDado(opt) {
 
     let h1 = document.createElement('h3');
     h1.setAttribute("id",`h1`);
-    h1.textContent=`Numero de tiradas: ${tiradas}`;
+    h1.textContent=`Tiradas: ${tiradas}`;
     con.appendChild(h1);
 
     let e3 = document.createElement('div');
@@ -319,7 +327,7 @@ function crearDado(opt) {
 
         let h1 = document.getElementById('h1');
         h1.textContent=``;
-        h1.textContent=`Numero de tiradas: ${tiradas}`;
+        h1.textContent=`Tiradas: ${tiradas}`;
 
         let d3 = document.getElementById('d3');
         d3.classList.add("animacion");
@@ -353,11 +361,11 @@ function botonJugar(){
     jugar.disabled=false;
 
     jugar.addEventListener("click", ()=>{
-    let login = document.getElementById('login');
-    login.classList="";
-    crearTablero(0);
-    crearDado(0);
-
+        let login = document.getElementById('login');
+        login.classList="";
+        crearTablero(0);
+        crearDado(0);
+        ini = new Date().toISOString();
     })
 
 
@@ -426,8 +434,33 @@ function menuJugar(fallo){
     jugar.classList="btn btn-secondary";
     div.appendChild(jugar);
 
-    reg.addEventListener("click", ()=> registro());
-    log.addEventListener("click", ()=> inicioSesion());
+    reg.addEventListener("click", ()=> {
+        var password = document.getElementById("password");
+        var email = document.getElementById("email");
+        if(email.value.includes("@") || password.length >= 6)
+        {
+            registro()
+        }
+        else
+        {
+            menuJugar(1);
+        }
+        
+    });
+    log.addEventListener("click", ()=> {
+        var password = document.getElementById("password");
+        var email = document.getElementById("email");
+        nombre= email.value;
+        if(email.value.includes("@") || password.value.length >= 6)
+        {
+            inicioSesion()
+        }
+        else
+        {
+            menuJugar(2);
+        }
+        
+    });
     
     if (fallo == 1) {
         let p = document.createElement('p');
@@ -437,11 +470,25 @@ function menuJugar(fallo){
     }
     if (fallo == 2){
         let p = document.createElement('p');
-        p.textContent="Formato de correo o contraseña fallido \n Correo debe incluir @ \n Contraseña de al menos 6 caracteres";
-        p.style="color:red";
+        p.textContent="Formato de correo o contraseña fallido "; 
         div.appendChild(p);
+        let p1 = document.createElement('p');
+        p1.textContent=" Correo debe incluir @ ";
+        p1.style="color:red";
+        div.appendChild(p1);
+        let p2= document.createElement('p');
+        p2.textContent="Contraseña de al menos 6 caracteres";
+        p2.style="color:red";
+        div.appendChild(p2);
     }
-    
+    if(fallo == 3)
+    {
+        let login = document.getElementById('login');
+        let p = document.createElement('p');
+        p.textContent="Usuario Registrado correctamente";
+        p.style="color:green";
+        login.appendChild(p);
+    }
     
 }
 
