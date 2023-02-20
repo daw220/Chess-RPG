@@ -1,26 +1,110 @@
+@font-face {
+    font-family: 'pixel';
+    src: url('../fonts/ThaleahFat.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+  }
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box; 
+    font-family: pixel;
+    font-size: x-large;
+
+}
+.sprite {
+    background-image: url(../src/spritesheet.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-dch {
+    width: 84px;
+    height: 116px;
+    background-position: -20px -20px;
+}
+
+.sprite-frente {
+    width: 82px;
+    height: 124px;
+    background-position: -144px -20px;
+}
+
+.sprite-izq {
+    width: 84px;
+    height: 116px;
+    background-position: -266px -20px;
+}
+
+
+
+.sprite1 {
+    background-image: url(../src/spritesheet1.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite1-1 {
+    width: 100px;
+    height: 100px;
+    background-position: -5px -5px;
+}
+
+.sprite1-2 {
+    width: 100px;
+    height: 100px;
+    background-position: -115px -5px;
+}
+
+.sprite1-3 {
+    width: 100px;
+    height: 100px;
+    background-position: -225px -5px;
+}
+
+.sprite1-4 {
+    width: 100px;
+    height: 100px;
+    background-position: -335px -5px;
+}
+
+.sprite1-5 {
+    width: 100px;
+    height: 100px;
+    background-position: -445px -5px;
+}
+
+.sprite1-6 {
+    width: 100px;
+    height: 100px;
+    background-position: -555px -5px;
 }
 
 body{
     width: 100vw;
     height: 100vh;
-}
-
-.juego{
-    width: 100%;
-    height: 100%;
-    background-image: url(../src/pngwing.com.png);
+    background-image: url(../src/fondo.png);
     background-repeat: no-repeat;
     background-size: cover;
-    filter: blur(3px);
     z-index: 0;
 }
+.logo{
+    width: 500px;
+    height: 500px;
+    background-image: url(../src/logo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
 .login{
-    display: contents;
-    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
 }
 
 .cont{
@@ -31,15 +115,29 @@ body{
     justify-content: center;
     align-items: center;
     z-index: 10;
-    translate:0 -100vh;
 }
+
+.cont form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: 25%;
+    margin: 0;
+    padding: 0;
+}
+
 .cont input,.botones{
-    width: 30%;
+    width:  60%;
     margin: 10px 10px 10px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
+}
+#jugar{
+    width:  42%;
 }
 
 .cuerpo{
@@ -49,10 +147,35 @@ body{
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    flex-wrap: nowrap;
-    translate:0 -100vh;
+    z-index: 10;
 }
-
+@media (min-width:1000px) {
+    .tablero{
+        width: 100%;
+        height: 60%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: row;
+        z-index: 10;
+    }
+    .dado{
+        width: 80%;
+        height: 20%;
+        background-color: #fff;
+        z-index: 10;
+    }
+    .con{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+    }
+    
+}
 .tablero{
     width: 60%;
     height: 100%;
@@ -89,14 +212,15 @@ body{
     z-index: 100;
 }
 
-.con h3, .con div{
-    padding: 20px 20px 20px 20px; 
+.con h3{
     z-index: 100;
 }
 
 .con input{
     width: 80%;
     height: 5%;
+    padding-bottom: 2.5%; 
+    padding-top: 2.5%; 
     background:linear-gradient(180deg, rgba(255,255,255,1) 7%, rgba(125,178,99,0.6138830532212884) 62%, rgba(255,255,255,1) 100%);
     border-radius: 10px;
     border: 2px #fff solid;
@@ -104,6 +228,68 @@ body{
 .con input:hover{
     transform: scale(1.1,1.1);
 }
+
+.e3 {
+    width: 100px;
+    height: 100px;
+    margin: 3em auto 0 auto;
+    position: relative;
+    perspective-origin: center -50%;
+    perspective: 500px;
+  }
+  
+.d3 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transform: translateZ(-150px);    
+  }
+.animacion{
+    animation-name: gira;
+    animation-duration: 3s;
+    animation-iteration-count: ease;
+}  
+.da{
+    position: absolute;
+    width: 100px;
+    height:100px;
+    background-color:#fff;
+    font-size: 3em;
+    text-align: center;
+    transform: scale(1.5,1.5);
+}
+/*frente*/
+.cara1{
+    transform: translateZ(48px);
+}
+/*trasera*/
+.cara2{
+    transform: rotateY(180deg) translateZ(48px);
+}
+/*izquierda*/
+.cara3{
+    transform: rotateY(-90deg) translateZ(48px);
+}
+/*derecha*/
+.cara4{
+    transform: rotateY(90deg) translateZ(48px);
+}
+/*abajo*/
+.cara5{
+    transform: rotateX(-90deg) translateZ(48px)
+}
+/*arriba*/
+.cara6{
+    transform: rotateX(90deg) translateZ(48px)
+}
+
+@keyframes gira {
+    0%{transform: translateZ(-150px) rotateY(0deg) rotatex(0deg);}
+    50%{transform: translateZ(-150px) rotateY(360deg) rotatex(360deg);}
+    100%{transform: translateZ(-150px) rotateY(0deg) rotatex(0deg);}
+}
+
 
 .dado1{
     width: 0;
@@ -141,25 +327,5 @@ body{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-
 }
 
-
-/* #c1{
-
-}
-#c2{
-    
-}
-#c3{
-    
-}
-#c4{
-    
-}
-#c5{
-    
-}
-#c6{
-    
-} */

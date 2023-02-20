@@ -1,15 +1,18 @@
 'use strict'
-
-import { registro,inicioSesion } from "./firebase.js";
+ 
+import { registro,inicioSesion, anhadir, tablaFin, record ,actuRecord} from "./firebase.js";
 import { dibujar } from "./dado.js";
 
-let x,y,z,t;
 let cas1,cas2,cas3,cas4;
 let negi,posi,negj,posj;
 let tiradas = "0";
-
+let nombre;
+let jugadas = [];
+let ini;
 
 function finPartida(params) {
+    
+    anhadir(tiradas,nombre,jugadas,ini)
 
     let tablero = document.getElementById('tablero');
     tablero.innerHTML="";
@@ -20,17 +23,15 @@ function finPartida(params) {
     let div = document.createElement('div');
     div.id="fin";
 
-    let h1 = document.createElement('h1');
-    h1.innerHTML="VICTORIA";
-    div.appendChild(h1);
-
     let div1 = document.createElement('div');
     div.appendChild(div1);
 
     div1.addEventListener("click", ()=>{
-
-        crearTablero("0");
-        crearDado();
+        tiradas = 0;
+        nombre="";
+        jugadas = [];
+        crearTablero(1);
+        crearDado(1);
     });
 
     let h2 = document.createElement('h1');
@@ -43,26 +44,35 @@ function finPartida(params) {
     tablero.appendChild(tab);
     tablero.appendChild(div);
 
+    tablaFin();
 
-    for (let i = 0; i < 5; i++) {
+    let h1 = document.createElement('h1');
 
-        let tr = document.createElement("tr");
-        tab.appendChild(tr);
-
-        for (let j = 0; j < 5; j++) {
-
-            let td = document.createElement("td");
-            tr.appendChild(td);
-        
-        }
+    let record = record(tiradas);
+    if(record == 0)
+    {
+        h1.innerHTML=`Héroe, has establecido un récord de tiradas con ${tiradas} tiradas.`;
+        tablero.appendChild(h1);
+        actuRecord();
     }
+    else
+    {
+        h1.innerHTML=`!“Récord no superado, el actual récord es de ${tiradas} tiradas.`;
+        tablero.appendChild(h1);
+    }
+    
     tablero.appendChild(tab);
 
 }
 
 function mover(pulsado){
-    
 
+    jugadas.push(pulsado);
+
+    let bn = document.getElementById("tirar");
+    bn.disabled=false;
+
+    
 
     if(pulsado == 99) 
     {
@@ -104,7 +114,6 @@ function mover(pulsado){
 }
 function movimiento(pasos){
 
-
     for (let i = 0; i < 10; i++) {
 
         for (let j = 0; j < 10; j++) {
@@ -121,17 +130,25 @@ function movimiento(pasos){
                 negj=j-pasos;
                 posj=j+pasos;
 
+                let lados=0;
+
                 if(negi>= 0 )
                 {
                     let casilla1 = document.getElementById(`${cas2}`);
                     casilla1.style= "background-color: red;"
                     casilla1.addEventListener("click", ()=>{ mover(`${cas2}`)})
                 }
+                else{
+                    lados++;
+                }
                 if( posi < 10 )
                 {
                     let casilla2 = document.getElementById(`${cas1}`);
                     casilla2.style= "background-color: red;"
                     casilla2.addEventListener("click",()=>{ mover(`${cas1}`)})
+                }
+                else{
+                    lados++;
                 }
                     
                 if( negj >= 0 )
@@ -140,11 +157,23 @@ function movimiento(pasos){
                     casilla3.style= "background-color: red;"
                     casilla3.addEventListener("click",()=>{ mover(`${cas4}`)})
                 }
+                else{
+                    lados++;
+                }
                 if(posj < 10 )
                 {
                     let casilla4 = document.getElementById(`${cas3}`);
                     casilla4.style= "background-color: red;"
                     casilla4.addEventListener("click",()=>{ mover(`${cas3}`)})
+                }
+                else{
+                    lados++;
+                }
+
+                if(lados == 4)
+                {
+                    let bn = document.getElementById("tirar");
+                    bn.disabled=false;
                 }
 
             }
@@ -161,7 +190,10 @@ function crearTablero(pro) {
         let login = document.getElementById('login');
         login.innerHTML="";
 
-    if(pro == 1){
+    if(pro == 0){
+        let cuerpo = document.getElementById('cuerpo');
+        cuerpo.id="cuerpo";
+        cuerpo.classList="cuerpo";
         
         let tablero = document.getElementById('t');
         tablero.id="tablero";
@@ -171,6 +203,7 @@ function crearTablero(pro) {
     {
         let tablero = document.getElementById('tablero');
         tablero.innerHTML="";
+        tablero.classList="tablero";
     }
     
 
@@ -210,17 +243,25 @@ function crearTablero(pro) {
 
 }
 
-function tirarDado() {
-    
-
-    return Math.round(Math.random()* (6-1)+1);
+function tirarDado() {   
+  return Math.round(Math.random()* (6-1)+1);
 }
 
-function crearDado() {
+function crearDado(opt) {
+    if(opt == 0)
+    {
+        let dado= document.getElementById('d');
+        dado.id="dado";
+        dado.classList="dado";
+    }
+    else
+    {
+        let dado= document.getElementById('dado');
+        dado.id="dado";
+        dado.classList="dado";
+    }
 
-    let dado= document.getElementById('d');
-    dado.id="dado";
-    dado.classList="dado";
+    
 
     let con = document.createElement('div');
     con.setAttribute("class",`con`);
@@ -235,87 +276,98 @@ function crearDado() {
 
     let h1 = document.createElement('h3');
     h1.setAttribute("id",`h1`);
-    h1.textContent=`Numero de tiradas: ${tiradas}`;
+    h1.textContent=`Tiradas: ${tiradas}`;
     con.appendChild(h1);
 
+    let e3 = document.createElement('div');
+    e3.setAttribute("class",`e3`);
+    e3.setAttribute("id",`e3`);
+    con.appendChild(e3);
+
+    let d3 = document.createElement('div');
+    d3.setAttribute("class",`d3`);
+    d3.setAttribute("id",`d3`);
+    e3.appendChild(d3);
+
+
     let div1 = document.createElement('aside');
-    div1.setAttribute("class",`dado cara1`);
+    div1.setAttribute("class",`da cara1`);
     div1.setAttribute("id",`c1`);
-    con.appendChild(div1);
-    let can1 = document.createElement('canva');
-    can1.setAttribute("id",`dado1`);
-    div1.appendChild(can1);
-
-
+    d3.appendChild(div1);
+    
     let div2 = document.createElement('aside');
-    div2.setAttribute("class",`dado cara2`);
+    div2.setAttribute("class",`da cara2`);
     div2.setAttribute("id",`c2`);
-    con.appendChild(div2);
-    let can2 = document.createElement('canva');
-    can2.setAttribute("id",`dado2`);
-    can2.setAttribute("width",`50px`);
-    can2.setAttribute("height",`50px`);
-    div2.appendChild(can2);
+    d3.appendChild(div2);
     
     let div3 = document.createElement('aside');
-    div3.setAttribute("class",`dado cara3`);
+    div3.setAttribute("class",`da cara3`);
     div3.setAttribute("id",`c3`);
-    con.appendChild(div3);
-    let can3 = document.createElement('canva');
-    can3.setAttribute("id",`dado3`);
-    can3.setAttribute("width",`50px`);
-    can3.setAttribute("height",`50px`);
-    div3.appendChild(can3);
-
+    d3.appendChild(div3);
 
     let div4 = document.createElement('aside');
-    div4.setAttribute("class",`dado cara4`);
+    div4.setAttribute("class",`da cara4`);
     div4.setAttribute("id",`c4`);
-    con.appendChild(div4);
-    let can4 = document.createElement('canva');
-    can4.setAttribute("id",`dado4`);
-    can4.setAttribute("width",`50px`);
-    can4.setAttribute("height",`50px`);
-    div4.appendChild(can4);
+    d3.appendChild(div4);
 
     let div5 = document.createElement('aside');
-    div5.setAttribute("class",`dado cara5`);
+    div5.setAttribute("class",`da cara5`);
     div5.setAttribute("id",`c5`);
-    con.appendChild(div5);
-    let can5 = document.createElement('canva');
-    can5.setAttribute("id",`dado5`);
-    can5.setAttribute("width",`50px`);
-    can5.setAttribute("height",`50px`);
-    div5.appendChild(can5);
+    d3.appendChild(div5);
 
-    let div6 = document.createElement('div');
-    div6.setAttribute("class",`dado cara6`);
+    let div6 = document.createElement('aside');
+    div6.setAttribute("class",`da cara6`);
     div6.setAttribute("id",`c6`);
-    con.appendChild(div6);
-    let can6 = document.createElement('canva');
-    can6.setAttribute("id",`dado6`);
-    can6.setAttribute("width",`50px`);
-    can6.setAttribute("height",`50px`);
-    div6.appendChild(can6);
+    d3.appendChild(div6);
 
-    dibujar();
+    dibujar("1");
 
     bn.addEventListener("click", (ev)=>{
         tiradas++;
 
-        let img = document.getElementById('c1');
-
         let h1 = document.getElementById('h1');
         h1.textContent=``;
-        h1.textContent=`Numero de tiradas: ${tiradas}`;
+        h1.textContent=`Tiradas: ${tiradas}`;
+
+        let d3 = document.getElementById('d3');
+        d3.classList.add("animacion");
 
         let numD = tirarDado();
-        img.setAttribute("class",`sprite1 sprite1-${numD}`);
+        
+        window.setTimeout(()=>{dibujar(numD)},2000);
 
-        movimiento(numD);
-
+        window.setTimeout(()=>{
+            movimiento(numD)
+            d3.classList.remove("animacion");
+        },3000);
+        bn.disabled=true;
 
     });
+
+}
+function botonJugar(){
+
+    let email = document.getElementById('email');
+    email.disabled=true;
+    let password = document.getElementById('password');
+    password.disabled=true;
+    let reg = document.getElementById('reg');
+    reg.disabled=true;
+    let log = document.getElementById('log');
+    log.classList="btn btn-secondary";
+    log.disabled=true;
+    let jugar = document.getElementById('jugar');
+    jugar.classList="btn btn-primary"
+    jugar.disabled=false;
+
+    jugar.addEventListener("click", ()=>{
+        let login = document.getElementById('login');
+        login.classList="";
+        crearTablero(0);
+        crearDado(0);
+        ini = new Date().toISOString();
+    })
+
 
 }
 
@@ -333,8 +385,8 @@ function menuJugar(fallo){
     
     
     
-    let h3 = document.createElement('h3');
-    h3.textContent="Chess-RPG";
+    let h3 = document.createElement('div');
+    h3.classList="logo";
     div.appendChild(h3);
 
 
@@ -346,49 +398,97 @@ function menuJugar(fallo){
     correo.id="email";
     correo.classList="form-control";
     correo.placeholder="Correo...";
-    div.appendChild(correo);
+    form.appendChild(correo);
 
     let contra = document.createElement('input');
     contra.type="password";
     contra.id="password";
+    contra.autocomplete=true;
     contra.placeholder="Contraseña...";
     contra.classList="form-control";
-    div.appendChild(contra);
+    form.appendChild(contra);
 
     let div2 = document.createElement('div');
     div2.id="botones";
     div2.classList= "botones";
-    div.appendChild(div2);
+    form.appendChild(div2);
     let reg = document.createElement('input');
     reg.type="button";
     reg.value="Registro";
+    reg.id="reg";
     reg.classList="btn btn-secondary";
     div2.appendChild(reg);
 
     let log = document.createElement('input');
     log.type="button";
     log.value="Iniciar sesión";
+    log.id="log";
     log.classList="btn btn-primary"
     div2.appendChild(log);
+    
+    let jugar = document.createElement('input');
+    jugar.id=  "jugar";
+    jugar.type="button";
+    jugar.value="JUGAR";
+    jugar.disabled="true";
+    jugar.classList="btn btn-secondary";
+    div.appendChild(jugar);
 
-    reg.addEventListener("click", ()=> registro());
-    log.addEventListener("click", ()=> inicioSesion());
+    reg.addEventListener("click", ()=> {
+        var password = document.getElementById("password");
+        var email = document.getElementById("email");
+        if(email.value.includes("@") || password.length >= 6)
+        {
+            registro()
+        }
+        else
+        {
+            menuJugar(1);
+        }
+        
+    });
+    log.addEventListener("click", ()=> {
+        var password = document.getElementById("password");
+        var email = document.getElementById("email");
+        nombre= email.value;
+        if(email.value.includes("@") || password.value.length >= 6)
+        {
+            inicioSesion()
+        }
+        else
+        {
+            menuJugar(2);
+        }
+        
+    });
     
     if (fallo == 1) {
         let p = document.createElement('p');
         p.textContent="Usuario o contraseña incorrecto";
         p.style="color:red";
-        login.appendChild(p);
-        console.log("1");
+        div.appendChild(p);
     }
     if (fallo == 2){
         let p = document.createElement('p');
-        p.textContent="Formato de correo o contraseña fallido \n Correo debe incluir @ \n Contraseña de al menos 6 caracteres";
-        p.style="color:red";
-        login.appendChild(p);
-        console.log("2");
+        p.textContent="Formato de correo o contraseña fallido "; 
+        div.appendChild(p);
+        let p1 = document.createElement('p');
+        p1.textContent=" Correo debe incluir @ ";
+        p1.style="color:red";
+        div.appendChild(p1);
+        let p2= document.createElement('p');
+        p2.textContent="Contraseña de al menos 6 caracteres";
+        p2.style="color:red";
+        div.appendChild(p2);
     }
-    
+    if(fallo == 3)
+    {
+        let login = document.getElementById('login');
+        let p = document.createElement('p');
+        p.textContent="Usuario Registrado correctamente";
+        p.style="color:green";
+        login.appendChild(p);
+    }
     
 }
 
@@ -396,6 +496,6 @@ function inicio(){
     menuJugar(0);
 }
 
-export{crearDado,crearTablero,menuJugar}
+export{botonJugar,menuJugar}
 
 window.onload=inicio;
