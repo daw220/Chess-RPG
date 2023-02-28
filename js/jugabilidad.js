@@ -1,8 +1,9 @@
 'use strict'
- 
-import { registro,inicioSesion, anhadir, tablaFin, record ,actuRecord} from "./firebase.js";
+/*Importaciones de las funciones implementadas en los demas js */
+import { registro,inicioSesion,record} from "./firebase.js";
 import { dibujar } from "./dado.js";
 
+/*Variables */
 let cas1,cas2,cas3,cas4;
 let negi,posi,negj,posj;
 let tiradas = "0";
@@ -10,10 +11,9 @@ let nombre;
 let jugadas = [];
 let ini;
 
-function finPartida(params) {
-    
-    anhadir(tiradas,nombre,jugadas,ini)
-
+/* Funcion la cual desencadena el final de parida en la cual se borra toda la pantalla y se hace display 
+    a la tabla de puntuacion y se hacen las interaciones con la base de datos de Firebase. */
+function finPartida() {
     let tablero = document.getElementById('tablero');
     tablero.innerHTML="";
     tablero.classList="tablero1";
@@ -24,19 +24,45 @@ function finPartida(params) {
     div.id="fin";
 
     let div1 = document.createElement('div');
+    div1.classList="retry";
     div.appendChild(div1);
+
+    let div2= document.createElement('div');
+    div2.classList="retry";
+    div.appendChild(div2);
 
     div1.addEventListener("click", ()=>{
         tiradas = 0;
-        nombre="";
         jugadas = [];
         crearTablero(1);
         crearDado(1);
     });
 
+    div2.addEventListener("click", ()=>{
+        tiradas = 0;
+        nombre="";
+        jugadas = [];
+        let dado= document.getElementById('dado');
+        dado.id="d";
+        dado.classList="d";
+        let cuerpo = document.getElementById('cuerpo');
+        cuerpo.id="cuerpo";
+        cuerpo.classList="cuerpo1";
+        
+        let tablero = document.getElementById('tablero');
+        tablero.innerHTML="";
+        tablero.id="t";
+        tablero.classList="t";
+        inicio();
+    });
+
     let h2 = document.createElement('h1');
     h2.innerHTML="VOLVER A JUGAR";
     div1.appendChild(h2);
+
+    let h3 = document.createElement('h1');
+    h3.innerHTML="SALIR";
+    div2.appendChild(h3);
     
 
     let tab = document.createElement("table");
@@ -44,27 +70,18 @@ function finPartida(params) {
     tablero.appendChild(tab);
     tablero.appendChild(div);
 
-    tablaFin();
-
     let h1 = document.createElement('h1');
+    h1.id="record";
+    record(tiradas);
 
-    let record = record(tiradas);
-    if(record == 0)
-    {
-        h1.innerHTML=`Héroe, has establecido un récord de tiradas con ${tiradas} tiradas.`;
-        tablero.appendChild(h1);
-        actuRecord();
-    }
-    else
-    {
-        h1.innerHTML=`!“Récord no superado, el actual récord es de ${tiradas} tiradas.`;
-        tablero.appendChild(h1);
-    }
-    
+   
+    div.appendChild(h1);
     tablero.appendChild(tab);
 
 }
 
+/*Funcion el la cual se comprueba la posicion la cual se a elegido para el movimiento y mueve al heroe a esta casiila.
+ Si esta casilla en la meta llama a la funcion finPartida.*/
 function mover(pulsado){
 
     jugadas.push(pulsado);
@@ -89,22 +106,22 @@ function mover(pulsado){
             tab.appendChild(tr);
     
             for (let j = 0; j < 10; j++) {
-    
+                
                 let td = document.createElement("td");
                 td.setAttribute("id",`${i}${j}`);
                 td.setAttribute("ocupada",`0`);
                 tr.appendChild(td);
-            
+                td.classList="ft";
             }
         }
 
         let casilla = document.getElementById(`${pulsado}`);
-        casilla.style= "background-color: blue;"
+        casilla.classList="heroe";
         casilla.setAttribute("ocupada","1");
 
     
         let casilla1 = document.getElementById("99");
-        casilla1.style= "background-color: green;"
+        casilla1.classList="cofre";
         casilla1.setAttribute("ocupada","0"); 
     }
     
@@ -112,6 +129,8 @@ function mover(pulsado){
        
 
 }
+/*Funcion en la que se implementan los calculos para que con la referencia de la posicion que ocupa el heroe 
+calcula las posibles posiciones que puede ocupar el heroe tras la tirada y coloca listeners. */
 function movimiento(pasos){
 
     for (let i = 0; i < 10; i++) {
@@ -135,7 +154,7 @@ function movimiento(pasos){
                 if(negi>= 0 )
                 {
                     let casilla1 = document.getElementById(`${cas2}`);
-                    casilla1.style= "background-color: red;"
+                    casilla1.classList="indicador"
                     casilla1.addEventListener("click", ()=>{ mover(`${cas2}`)})
                 }
                 else{
@@ -144,7 +163,7 @@ function movimiento(pasos){
                 if( posi < 10 )
                 {
                     let casilla2 = document.getElementById(`${cas1}`);
-                    casilla2.style= "background-color: red;"
+                    casilla2.classList="indicador"
                     casilla2.addEventListener("click",()=>{ mover(`${cas1}`)})
                 }
                 else{
@@ -154,7 +173,7 @@ function movimiento(pasos){
                 if( negj >= 0 )
                 {
                     let casilla3 = document.getElementById(`${cas4}`);
-                    casilla3.style= "background-color: red;"
+                    casilla3.classList="indicador"
                     casilla3.addEventListener("click",()=>{ mover(`${cas4}`)})
                 }
                 else{
@@ -163,7 +182,7 @@ function movimiento(pasos){
                 if(posj < 10 )
                 {
                     let casilla4 = document.getElementById(`${cas3}`);
-                    casilla4.style= "background-color: red;"
+                    casilla4.classList="indicador"
                     casilla4.addEventListener("click",()=>{ mover(`${cas3}`)})
                 }
                 else{
@@ -175,15 +194,11 @@ function movimiento(pasos){
                     let bn = document.getElementById("tirar");
                     bn.disabled=false;
                 }
-
             }
         }
     }
-
-        
-       
-
 }
+/*Funcion que genera la tabla en la cual se desarrolla el juego y se pinta la forma inicial del tablero. */
 function crearTablero(pro) {
    
 
@@ -224,16 +239,16 @@ function crearTablero(pro) {
             let td = document.createElement("td");
             td.setAttribute("id",`${i}${j}`);
             td.setAttribute("ocupada",`0`);
-
+            td.classList="ft";
             if(i == 0 && j == 0)
             {
-                td.style= "background-color: blue;"
+                td.classList="heroe";
                 td.setAttribute("ocupada",`1`);
                 
             }
             if(i == 9 && j == 9)
             {
-                td.style= "background-color: green;"
+                td.classList="cofre";
             }
             tr.appendChild(td);
         
@@ -242,11 +257,12 @@ function crearTablero(pro) {
     tablero.appendChild(tab);
 
 }
-
+/*Funcion que genera un numero aleatorio entre 1 y 6 */
 function tirarDado() {   
   return Math.round(Math.random()* (6-1)+1);
 }
 
+/*Funcion la cual genera el dado y la funcionalidad para que este adquiera la animacion y el valor de la cara a mostrar. */
 function crearDado(opt) {
     if(opt == 0)
     {
@@ -345,6 +361,7 @@ function crearDado(opt) {
     });
 
 }
+/*Funcion la cual deshabilita el formulario y habilita el boton jugar con un mensaje para el usuario. */
 function botonJugar(){
 
     let email = document.getElementById('email');
@@ -371,7 +388,8 @@ function botonJugar(){
 
 }
 
-
+/*Funcion la cual crea el login completo, en la cual se integran las funciones de firebase.js registro e iniciarSesion.
+En este tambien se hacen las comprobaciones de los formatos de correo y contraseña. */
 function menuJugar(fallo){
 
     let login = document.getElementById('login');
@@ -382,13 +400,9 @@ function menuJugar(fallo){
     div.classList= "form-container cont";
     login.appendChild(div);
 
-    
-    
-    
     let h3 = document.createElement('div');
     h3.classList="logo";
     div.appendChild(h3);
-
 
     let form = document.createElement('form');
     div.appendChild(form);
@@ -404,7 +418,7 @@ function menuJugar(fallo){
     contra.type="password";
     contra.id="password";
     contra.autocomplete=true;
-    contra.placeholder="Contraseña...";
+    contra.placeholder="Contrasena...";
     contra.classList="form-control";
     form.appendChild(contra);
 
@@ -412,6 +426,7 @@ function menuJugar(fallo){
     div2.id="botones";
     div2.classList= "botones";
     form.appendChild(div2);
+
     let reg = document.createElement('input');
     reg.type="button";
     reg.value="Registro";
@@ -421,7 +436,7 @@ function menuJugar(fallo){
 
     let log = document.createElement('input');
     log.type="button";
-    log.value="Iniciar sesión";
+    log.value="Iniciar sesion";
     log.id="log";
     log.classList="btn btn-primary"
     div2.appendChild(log);
@@ -445,7 +460,6 @@ function menuJugar(fallo){
         {
             menuJugar(1);
         }
-        
     });
     log.addEventListener("click", ()=> {
         var password = document.getElementById("password");
@@ -459,7 +473,6 @@ function menuJugar(fallo){
         {
             menuJugar(2);
         }
-        
     });
     
     if (fallo == 1) {
@@ -491,11 +504,12 @@ function menuJugar(fallo){
     }
     
 }
-
+/*Funcion que ejecuta la funcion  menuJugar tras cargar la pagina completamente. */
 function inicio(){
     menuJugar(0);
 }
 
-export{botonJugar,menuJugar}
+/*Exportacion  de funiones y variables para utilizarlas en firebase.js */
+export{botonJugar,menuJugar,tiradas,jugadas,nombre,ini}
 
 window.onload=inicio;

@@ -11,7 +11,7 @@
     box-sizing: border-box; 
     font-family: pixel;
     font-size: x-large;
-
+    color:#fff;
 }
 .sprite {
     background-image: url(../src/spritesheet.png);
@@ -84,10 +84,9 @@
 body{
     width: 100vw;
     height: 100vh;
-    background-image: url(../src/fondo.png);
+    background-image: url(../src/fondo.gif);
     background-repeat: no-repeat;
     background-size: cover;
-    z-index: 0;
 }
 .logo{
     width: 500px;
@@ -162,8 +161,9 @@ body{
     .dado{
         width: 80%;
         height: 20%;
-        background-color: #fff;
+        background-color: #5a5a59;
         z-index: 10;
+        border-radius: 20px;
     }
     .con{
         width: 100%;
@@ -184,6 +184,7 @@ body{
     align-items: center;
     flex-direction: column;
     z-index: 10;
+    
 }
 .tablero1{
     width: 100%;
@@ -196,10 +197,14 @@ body{
 }
 
 .dado{
+    border: 2px #fff solid;
     width: 20%;
     height: 80%;
-    background-color: #fff;
+    background-image: url(../src/fondocelda.png);
+    background-size: 25%;
+    background-repeat: repeat;
     z-index: 10;
+    border-radius: 20px;
 }
 
 .con{
@@ -218,14 +223,13 @@ body{
 
 .con input{
     width: 80%;
-    height: 5%;
-    padding-bottom: 2.5%; 
-    padding-top: 2.5%; 
-    background:linear-gradient(180deg, rgba(255,255,255,1) 7%, rgba(125,178,99,0.6138830532212884) 62%, rgba(255,255,255,1) 100%);
+    height: 5%; 
+    background-color: #000;
     border-radius: 10px;
     border: 2px #fff solid;
 }
-.con input:hover{
+
+.con input:hover, .retry:hover{
     transform: scale(1.1,1.1);
 }
 
@@ -300,13 +304,14 @@ body{
     width: 80%;
     height: 80%;
     border: 2px #000 solid;
+    background-image: url(../src/fondocelda.png);
+    background-size: 25%;
+    background-repeat: repeat;
 }
 
 #tab td{
     width: 15px;
-    height: 15px;
-    border: 1px #000 solid;
-    
+    height: 15px;    
 }
 
 #tab1
@@ -314,18 +319,71 @@ body{
     width: 60%;
     height: 40%;
     border: 2px #000 solid;
+    background-image: url(../src/fondocelda.png);
+    background-size: 25%;
+    background-repeat: repeat;
 }
 
 #tab1 td{
     width: 15px;
     height: 15px;
     border: 1px #000 solid;
+    
 }
-.fin{
+#fin{
     width: 80%;
     height: 30%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+#fin div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.retry{
+    width: 50%;
+    height: 40%; 
+    background-color: #000;
+    border-radius: 10px;
+    border: 2px #fff solid;
 }
 
+
+
+.heroe{
+    background-image: url(../src/heroe1.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.ft{
+    background-image: url(../src/fondocelda.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.cofre{
+    background-image: url(../src/cofre.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+.indicador{
+    background-image: url(../src/heroe1.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation-name:respiracion;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+} 
+
+@keyframes respiracion {
+    0%{opacity: 100%;transform: scale(1)}
+    50%{opacity: 50%; transform: scale(0.7)}
+    100%{opacity: 100%;transform: scale(1)}
+}

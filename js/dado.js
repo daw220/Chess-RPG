@@ -1,5 +1,6 @@
 'use strict'
 
+/*Metodo que sirve pra cambiar las clases que utilizan las caras del dado para mostrar el sprite corresponciente. */
 function dibujar(aleatorio){
     let aside;
     switch (parseInt(aleatorio)) {
@@ -164,9 +165,6 @@ function dibujar(aleatorio){
         default:
             console.log("Algo salio mal");
             break;
-    }
-    
-    
-
+    }  
 }
 export{dibujar}

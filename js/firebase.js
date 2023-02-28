@@ -1,11 +1,12 @@
 'use strict'
-
+/*Importacion de modulos necesarios de firebase y de js jugabilidad. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 import { getFirestore, addDoc, collection, getDocs, updateDoc , doc, orderBy, limit,query, where } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
-import {botonJugar,menuJugar} from "./jugabilidad.js";
+import {botonJugar,menuJugar,tiradas,jugadas,nombre,ini} from "./jugabilidad.js";
 
+/*Datos de configuracion de firebase */
 const firebaseConfig = {
   apiKey: "AIzaSyBqN1LPAyvwSK5nRV0gkZzawiuXzSLsMIM",
   authDomain: "chess-rpg-b8a32.firebaseapp.com",
@@ -22,7 +23,8 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
-
+/*Funcion que comprueba si los datos que se proporcionan en el formulario de la pagina de inicio 
+existen en la base de datos de usuarios registrados en la aplicacion de firebase */
 function inicioSesion() {
     var email = document.getElementById("email").value;
     var password = document.getElementById('password').value;
@@ -43,6 +45,7 @@ function inicioSesion() {
     });
 }
 
+/*Funcion que crear un usuario en la plataforma firebase con los datos del formulario de la pagina de inicio.  */
 function registro() {
     var email = document.getElementById("email").value;;
     var password = document.getElementById('password').value;
@@ -57,22 +60,24 @@ function registro() {
             menuJugar(2);
     });
 }
-async function anhadir(tir,nom,jug,ini){
+
+/*Funcion el cual añade un documento nuevo con los datos de la partida en curso */
+async function anhadir(){
 
     await addDoc(collection(db, "partidas"),{
-        tiradas:tir,
-        nombre:nom,
-        jugadas:jug,
+        tiradas:tiradas,
+        nombre:nombre,
+        jugadas:jugadas,
         inicio:ini,
         fin: new Date().toISOString()
     })
 
 };
 
+/*Funcion el cual contruye una tabla de 5 registros con los datos almacenados en la base de datos
+de firebase a modo de top puntuaciones del juego. */
 async function tablaFin(){
-    console.log("tabla");
     let aux = 1;
-    
     const querySnapshot = await getDocs(query((collection(db, "partidas")),orderBy("tiradas","asc"),limit(5)));
         querySnapshot.forEach((doc) => {
             let tab = document.getElementById("tab1");
@@ -97,24 +102,33 @@ async function tablaFin(){
         return aux;
 }
 
-async function record(tiradas){
-    let aux = 0;
-    
-    const querySnapshot = await getDocs(query((doc(db, "partidas","record")), where("tiradas", "<", tiradas)));
+/*Funcion el cual consulta la base de datos de Firebase para comprobar si se ha realizado un nuevo record 
+de tiradas en la partida en curso. Ademas, se utilizan los Funcions anhadir  y tablaFin. */
+async function record(){
+    let res=[];
+    const querySnapshot = await getDocs(query(collection(db, "partidas")));
         querySnapshot.forEach((doc) => {
-            
-            return doc.data().tiradas;
-            
+            res.push(doc.data().tiradas);
         }); 
-    return aux;
+        
+        res.sort((a,b)=>{return a - b;})
+
+        let h1 = document.getElementById("record");
+        if(res[0] > tiradas)
+        {
+            h1.innerHTML=`Heroe, has establecido un record de tiradas con ${tiradas} tiradas.`;
+            anhadir();
+            tablaFin();
+        }
+        else
+        {
+            anhadir();
+            tablaFin();
+            h1.innerHTML=`Record no superado, el actual record es de ${res[0]} tiradas.`;
+        }s
 }
 
-async function actuRecord(tiradas){
-    await updateDoc((doc(db, "partidas","record")),{tiradas:tiradas});
-}
 
 
-
-
-export{registro,inicioSesion, anhadir, tablaFin,record, actuRecord}
-
+/*Exportacion de los Funcions utilizados en el js jugabilidad. */
+export{registro,inicioSesion,record}
